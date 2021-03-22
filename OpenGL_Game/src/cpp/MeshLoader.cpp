@@ -1,6 +1,5 @@
 #include "MeshLoader.h"
 
-#include <iostream>
 #include <fstream>
 #include "structures.h"
 
@@ -9,7 +8,8 @@ using namespace std;
 namespace MeshLoader
 {
 	void LoadVertices(ifstream& inFile, Mesh& mesh);
-	void LoadColours(ifstream& inFile, Mesh& mesh);
+	void LoadNormals(ifstream& inFile, Mesh& mesh);
+	void LoadTexCoords(ifstream& inFile, Mesh& mesh);
 	void LoadIndices(ifstream& inFile, Mesh& mesh);
 
 	void LoadVertices(ifstream& inFile, Mesh& mesh)
@@ -29,19 +29,35 @@ namespace MeshLoader
 		}
 	}
 
-	void LoadColours(ifstream& inFile, Mesh& mesh)
+	void LoadNormals(ifstream& inFile, Mesh& mesh)
 	{
-		inFile >> mesh.colorCount;
+		inFile >> mesh.normalCount;
 		
-		if (mesh.colorCount > 0)
+		if (mesh.normalCount > 0)
 		{
-			mesh.colors = new Color[mesh.colorCount];
+			mesh.normals = new Vector3[mesh.normalCount];
 
-			for (int i = 0; i < mesh.colorCount; i++)
+			for (int i = 0; i < mesh.normalCount; i++)
 			{
-				inFile >> mesh.colors[i].r;
-				inFile >> mesh.colors[i].g;
-				inFile >> mesh.colors[i].b;
+				inFile >> mesh.normals[i].x;
+				inFile >> mesh.normals[i].y;
+				inFile >> mesh.normals[i].z;
+			}
+		}
+	}
+
+	void LoadTexCoords(ifstream& inFile, Mesh& mesh)
+	{
+		inFile >> mesh.texCoordCount;
+
+		if (mesh.texCoordCount > 0)
+		{
+			mesh.texCoords = new TexCoord[mesh.texCoordCount];
+
+			for (int i = 0; i < mesh.texCoordCount; i++)
+			{
+				inFile >> mesh.texCoords[i].u;
+				inFile >> mesh.texCoords[i].v;
 			}
 		}
 	}
@@ -61,7 +77,7 @@ namespace MeshLoader
 		}
 	}
 
-	Mesh* MeshLoader::Load(char* path)
+	Mesh* MeshLoader::Load(string path)
 	{
 		Mesh* mesh = new Mesh();
 
@@ -77,7 +93,8 @@ namespace MeshLoader
 
 		// Load the cube 
 		LoadVertices(inFile, *mesh);
-		LoadColours(inFile, *mesh);
+		LoadTexCoords(inFile, *mesh);
+		LoadNormals(inFile, *mesh);
 		LoadIndices(inFile, *mesh);
 
 		return mesh;

@@ -9,12 +9,13 @@
 #include "freeglut.h" // freeglut Library
 #include "GLUTCallbacks.h" // Glut call backs
 #include "structures.h" // common structs
+#include "StaticObjects.h"
 #include "Cube.h"
 #include "SceneObject.h"
+#include "Constants.h"
 
 // definitions for values
 #define REFRESHRATE 16
-
 
 class HelloGL
 {
@@ -35,7 +36,7 @@ public:
 private:
 	float rotation;
 	double cameraX, cameraY, cameraZ;
-	SceneObject* cube[1000];
+	SceneObject* sceneObjects[CUBECOUNT + PYRAMIDCOUNT];
 	Camera* camera;
 };
 #endif // HELLOGL_H

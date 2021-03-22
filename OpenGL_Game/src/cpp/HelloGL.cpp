@@ -1,6 +1,6 @@
 #include "HelloGL.h"
-#include "Constants.h"
 #include "MeshLoader.h"
+#include "Texture2D.h"
 #include <iostream>
 
 HelloGL::HelloGL(int argc, char* argv[])
@@ -8,6 +8,11 @@ HelloGL::HelloGL(int argc, char* argv[])
 	InitGL(argc, argv);
 	InitObjects();
 	glutMainLoop();
+}
+
+HelloGL::~HelloGL()
+{
+	delete camera;
 }
 
 void HelloGL::Update()
@@ -25,35 +30,10 @@ void HelloGL::Update()
 	if (rotation >= 360.0f)
 		rotation = 0.0f;
 
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < CUBECOUNT; i++)
 	{
-		cube[i]->Update();
+		sceneObjects[i]->Update();
 	}
-}
-
-void HelloGL::Display()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
-
-	for (int i = 0; i < 1000; i++)
-	{
-		cube[i]->Draw();
-	}
-
-	glFlush(); // flush the scene to the buffer
-	glutSwapBuffers(); // swap the buffers 
-}
-
-void HelloGL::Keyboard(unsigned char key, int x, int y)
-{
-	if (key == 'd')
-		cameraX += 0.1;
-	else if (key == 'a')
-		cameraX -= 0.1;
-	else if (key == 'w')
-		cameraY += 0.1;
-	else if (key == 's')
-		cameraY -= 0.1;
 }
 
 void HelloGL::InitObjects()
@@ -67,13 +47,31 @@ void HelloGL::InitObjects()
 	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
 	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
-	Mesh* cubeMesh = MeshLoader::Load((char *)"files/cube.txt");
+	// Load the cube mesh
+	Mesh* cubeMesh = MeshLoader::Load("files/cube.txt");
+
+	// Load the texture for the cube
+	Texture2D* texture = new Texture2D();
+	texture->Load("textures/Penguins.raw", 512, 512);
 
 	// setup cube
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < CUBECOUNT; i++)
 	{
-		cube[i] = new Cube(cubeMesh, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		sceneObjects[i] = new Cube(cubeMesh, texture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
 	}
+
+	/* removed pyramid load methods
+	Mesh* pyramidMesh = MeshLoader::Load("files/pyramid.txt");
+	for (int i = CUBECOUNT; i < PYRAMIDCOUNT; i++)
+	{
+		sceneObjects[i] = new StaticObject(pyramidMesh, texture, ((rand() % 400) / 10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+	}
+
+
+	for (int i = CUBECOUNT; i < PYRAMIDCOUNT; i++)
+	{
+		sceneObjects[i]->Draw();
+	}*/
 }
 
 void HelloGL::InitGL(int argc, char* argv[])
@@ -103,7 +101,28 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glCullFace(GL_BACK);
 }
 
-HelloGL::~HelloGL()
+void HelloGL::Display()
 {
-	delete camera;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
+
+	for (int i = 0; i < CUBECOUNT; i++)
+	{
+		sceneObjects[i]->Draw();
+	}
+
+	glFlush(); // flush the scene to the buffer
+	glutSwapBuffers(); // swap the buffers 
+}   
+
+void HelloGL::Keyboard(unsigned char key, int x, int y)
+{
+	if (key == 'd')
+		cameraX += 0.1;
+	else if (key == 'a')
+		cameraX -= 0.1;
+	else if (key == 'w')
+		cameraY += 0.1;
+	else if (key == 's')
+		cameraY -= 0.1;
 }
+

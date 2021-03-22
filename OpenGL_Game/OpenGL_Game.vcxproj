@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\cpp\Shader.cpp" />
     <ClCompile Include="src\cpp\SceneObject.cpp" />
     <ClCompile Include="src\cpp\Cube.cpp" />
     <ClCompile Include="src\cpp\GLUTCallbacks.cpp" />
@@ -26,8 +27,10 @@
     <ClCompile Include="src\cpp\main.cpp" />
     <ClCompile Include="src\cpp\MeshLoader.cpp" />
     <ClCompile Include="src\cpp\StaticObjects.cpp" />
+    <ClCompile Include="src\cpp\Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\header\Shader.h" />
     <ClInclude Include="src\GL\freeglut.h" />
     <ClInclude Include="src\GL\freeglut_ext.h" />
     <ClInclude Include="src\GL\freeglut_std.h" />
@@ -40,6 +43,7 @@
     <ClInclude Include="src\header\MeshLoader.h" />
     <ClInclude Include="src\header\StaticObjects.h" />
     <ClInclude Include="src\header\structures.h" />
+    <ClInclude Include="src\header\Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="freeglut.dll" />

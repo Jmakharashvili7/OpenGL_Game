@@ -4,12 +4,15 @@
 
 #include "structures.h"
 
+class Texture2D;
+
 class SceneObject
 {
 protected:
 	Mesh* m_mesh;
+	Texture2D* m_texture;
 public:
-	SceneObject(Mesh* mesh);
+	SceneObject(Mesh* mesh, Texture2D* texture);
 	virtual ~SceneObject();
 
 	virtual void Update();

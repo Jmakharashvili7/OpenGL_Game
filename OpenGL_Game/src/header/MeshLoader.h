@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Structures.h"
+#include "iostream"
 
 namespace MeshLoader
 {
-	Mesh* Load(char* path);
+	Mesh* Load(std::string path);
 };
 
